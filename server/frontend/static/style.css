@@ -124,3 +124,11 @@ img{
     text-align:center;
     box-shadow: 2px 2px 3px #999;  
 }
+
+.vertical-line {
+    border-left: 1px solid #000;
+    height: 100%; 
+    margin: auto; 
+}
+
+  
