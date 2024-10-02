@@ -16,10 +16,6 @@ class CarMake(models.Model):
 
 # Car Model model
 class CarModel(models.Model):
-    # Many-to-One relationship
-    car_make = models.ForeignKey(CarMake, on_delete=models.CASCADE)
-    name = models.CharField(max_length=100)
-    CAR_TYPES = [
         ('SEDAN', 'Sedan'),
         ('SUV', 'SUV'),
         ('WAGON', 'Wagon'),
