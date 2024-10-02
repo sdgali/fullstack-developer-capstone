@@ -15,7 +15,8 @@ class CarMake(models.Model):
 
 
 def __str__(self):
-        return self.name  # Return the name as the string representation
+    return self.name  # Return the name as the string representation
+
 # Car Model model
 class CarModel(models.Model):
     # Many-to-One relationship
@@ -25,13 +26,13 @@ class CarModel(models.Model):
         ('SEDAN', 'Sedan'),
         ('SUV', 'SUV'),
         ('WAGON', 'Wagon'),
-# Add more choices as required
+  # Add more choices as required
     ]
     type = models.CharField(max_length=10, choices=CAR_TYPES, default='SUV')
     year = models.IntegerField(
         default=2023, 
-        validators=[MaxValueValidator(2023), MinValueValidator(2015)]
-    )
-    # Other fields as needed
-    def __str__(self):
+        validators=[MaxValueValidator(2023), MinValueValidator(2015)])
+# Other fields as needed
+
+def __str__(self):
         return self.name  # Return the name as the string representation
