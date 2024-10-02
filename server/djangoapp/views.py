@@ -17,7 +17,7 @@ logger = logging.getLogger(__name__)
 
 # Create your views here.
 
-# Create a `login_request` view to handle sign in request
+
 @csrf_exempt
 def login_user(request):
     data = json.loads(request.body)
@@ -33,14 +33,14 @@ def login_user(request):
 
     return JsonResponse(data)
 
-# Create a `logout_request` view to handle sign out request
+
 @csrf_exempt
 def logout_request(request):
     logout(request)
     data = {"userName": ""}
     return JsonResponse(data)
 
-# Create a `registration` view to handle sign up request
+
 @csrf_exempt
 def registration(request):
     data = json.loads(request.body)
@@ -49,10 +49,9 @@ def registration(request):
     first_name = data['firstName']
     last_name = data['lastName']
     email = data['email']
-    
+
     username_exist = False
-    email_exist = False
-    
+
     try:
         User.objects.get(username=username)
         username_exist = True
@@ -74,14 +73,13 @@ def registration(request):
         data = {"userName": username, "error": "Already Registered"}
         return JsonResponse(data)
 
-# Update the `get_dealerships` view to render the index page with
-# a list of dealerships
+
 def get_dealerships(request, state="All"):
     endpoint = "/fetchDealers" if state == "All" else f"/fetchDealers/{state}"
     dealerships = get_request(endpoint)
     return JsonResponse({"status": 200, "dealers": dealerships})
 
-# Create a `get_dealer_reviews` view to render the reviews of a dealer
+
 def get_dealer_reviews(request, dealer_id):
     if dealer_id:
         endpoint = f"/fetchReviews/dealer/{dealer_id}"
@@ -92,7 +90,7 @@ def get_dealer_reviews(request, dealer_id):
         return JsonResponse({"status": 200, "reviews": reviews})
     return JsonResponse({"status": 400, "message": "Bad Request"})
 
-# Create a `get_dealer_details` view to render the dealer details
+
 def get_dealer_details(request, dealer_id):
     if dealer_id:
         endpoint = f"/fetchDealer/{dealer_id}"
@@ -100,7 +98,7 @@ def get_dealer_details(request, dealer_id):
         return JsonResponse({"status": 200, "dealer": dealership})
     return JsonResponse({"status": 400, "message": "Bad Request"})
 
-# Create a `add_review` view to submit a review
+
 @csrf_exempt
 def add_review(request):
     if not request.user.is_anonymous:
@@ -108,16 +106,17 @@ def add_review(request):
         try:
             post_review(data)
             return JsonResponse({"status": 200})
-        except Exception as err:
+        except Exception:
             return JsonResponse({"status": 401, "message": "Error in posting review"})
     return JsonResponse({"status": 403, "message": "Unauthorized"})
+
 
 def get_cars(request):
     count = CarMake.objects.count()
     if count == 0:
         initiate()
-    
+
     car_models = CarModel.objects.select_related('car_make')
     cars = [{"CarModel": car_model.name, "CarMake": car_model.car_make.name} for car_model in car_models]
-    
+
     return JsonResponse({"CarModels": cars})
